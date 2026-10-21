@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;,">
+    <title>PetShop Manager</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,300&family=DM+Sans:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./style.css" />
+    <script type="module" src="./scripts/main.js" defer></script>
+  </head>
+  <body>
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar__brand">
+        <span class="sidebar__paw">🐾</span>
+        <h1 class="sidebar__title">PetShop<br /><em>Manager</em></h1>
+      </div>
+
+      <nav class="sidebar__nav">
+        <a href="#" class="nav-link nav-link--active" data-section="clients">
+          <span class="nav-link__icon">👤</span>
+          <span>Home</span>
+        </a>
+        <!-- <a href="#" class="nav-link" data-section="pets">
+          <span class="nav-link__icon">🐶</span>
+          <span>Pets</span>
+        </a>
+        <a href="#" class="nav-link" data-section="breeds">
+          <span class="nav-link__icon">🔍</span>
+          <span>Raças</span>
+        </a> -->
+      </nav>
+
+      <div class="sidebar__stats">
+        <p class="stats__label">Total de clientes</p>
+        <p class="stats__value" id="stat-clients">0</p>
+        <p class="stats__label">Total de pets</p>
+        <p class="stats__value" id="stat-pets">0</p>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+      <!-- TOPBAR -->
+      <header class="topbar">
+        <div class="topbar__left">
+          <h2 class="topbar__heading" id="page-title">Clientes</h2>
+          <p class="topbar__sub" id="page-sub">
+            Gerencie os tutores cadastrados
+          </p>
+        </div>
+        <div class="topbar__right">
+          <div class="search-wrap">
+            <span class="search-wrap__icon">🔎</span>
+            <input
+              class="search-wrap__input"
+              type="search"
+              id="search-input"
+              placeholder="Buscar..."
+            />
+          </div>
+          <button class="btn btn--primary" id="btn-new" type="button">
+            + Novo
+          </button>
+        </div>
+      </header>
+
+      <!-- TOAST -->
+      <div class="toast" id="toast" role="status" aria-live="polite">
+        <span id="toast-msg">Salvo com sucesso!</span>
+      </div>
+
+      <!-- ── PÁGINA LISTA ── -->
+      <section class="cards-grid" id="cards-grid"></section>
+
+      <div class="empty-state hidden" id="empty-state">
+        <p class="empty-state__emoji">🐾</p>
+        <p class="empty-state__text">Nenhum item cadastrado ainda.</p>
+        <p class="empty-state__sub">
+          Clique em <strong>+ Novo</strong> para começar.
+        </p>
+      </div>
+
+     <section id="page-detalhe">
+      <div class="container-botoes">
+        <button class="btn-back" id="btn-back" type="button">← Voltar</button>
+        <button class="btn btn--primary" id="btn-salvar" type="button">
+          Salvar
+        </button>
+      </div>
+
+      <div class="detalhe-hero">
+        <img class="detalhe-hero__avatar hidden" id="detalhe-avatar" alt="Avatar do Pet" />
+        
+        <div id="sem-foto" class="detalhe-hero__avatar--vazio"></div>
+        <input type="file" id="upload-avatar" accept="image/*" style="display: none;" />
+        <div>
+          <p class="detalhe-hero__nome" id="detalhe-nome">—</p>
+          <p class="detalhe-hero__sub" id="detalhe-sub">—</p>
+        </div>
+      </div>
+
+      <input type="hidden" id="field-id" />
+
+      <div class="detalhe-grid">
+        <div class="detalhe-card">
+          <p class="detalhe-card__titulo">👤 Tutor</p>
+
+          <div class="detalhe-field">
+            <label class="detalhe-field__label" for="field-name">Nome</label>
+            <input
+              class="form-input"
+              type="text"
+              id="field-name"
+              placeholder="Ex: João Silva"
+            />
+          </div>
+
+          <div class="detalhe-field">
+            <label class="detalhe-field__label" for="field-email">E-mail</label>
+            <input
+              class="form-input"
+              type="email"
+              id="field-email"
+              placeholder="joao@email.com"
+            />
+          </div>
+
+          <div class="detalhe-field">
+            <label class="detalhe-field__label" for="field-phone">Telefone</label>
+            <input
+              class="form-input"
+              type="tel"
+              id="field-phone"
+              placeholder="(11) 99999-9999"
+            />
+          </div>
+
+          <div class="detalhe-field">
+            <label class="detalhe-field__label" for="field-notes">Observações</label>
+            <textarea
+              class="form-input form-input--textarea"
+              id="field-notes"
+              rows="3"
+              placeholder="Alguma anotação..."
+            ></textarea>
+          </div>
+        </div>
+
+        <div class="detalhe-card">
+          <p class="detalhe-card__titulo">🐾 Pet</p>
+
+          <div class="detalhe-field">
+            <label class="detalhe-field__label" for="field-pet-nome">Nome do pet</label>
+            <input
+              class="form-input"
+              type="text"
+              id="field-pet-nome"
+              placeholder="Ex: Rex"
+            />
+          </div>
+
+          <div class="detalhe-field">
+            <label class="detalhe-field__label" for="field-pet-raca">Raça do pet</label>
+            <input
+              class="detalhe-field__value form-input"
+              type="text"
+              id="field-pet-raca"
+              placeholder="Ex: Cheetoh"
+            />
+          </div>
+        </div>
+
+        <div class="detalhe-card detalhe-card--full">
+          <p class="detalhe-card__titulo">📋 Histórico</p>
+          <div id="detalhe-historico">
+            <p class="historico" id="historico"></p>
+          </div>
+        </div>
+      </div>
+</section>
+    <!-- MODAL CONFIRMAÇÃO DELETE -->
+    <div class="modal-overlay" id="confirm-overlay">
+      <div class="modal modal--sm" role="dialog" aria-modal="true">
+        <p class="confirm__emoji">🗑️</p>
+        <h2 class="modal__title">Confirmar exclusão</h2>
+        <p class="confirm__text">
+          Tem certeza? Essa ação não pode ser desfeita.
+        </p>
+        <div class="modal__footer">
+          <button class="btn btn--ghost" id="confirm-cancel">Cancelar</button>
+          <button class="btn btn--danger" id="confirm-delete">Excluir</button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
