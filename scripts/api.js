@@ -1,10 +1,9 @@
-const CAT_API_KEY = "live_Y6CdwXafV9Yrpbrbd7MKBjYkvbwdci5ZCINThCyG9vrGlEsggmMzyH8eBAedNPKr";
-const CAT_API_URL = "https://api.thecatapi.com/v1";
 const API_URL = "http://localhost:3000";
 
 async function request(url, options = {}) {
   const response = await fetch(url, options);
-  if (!response.ok) throw new Error(`Erro ${response.status}: ${response.statusText}`);
+  if (!response.ok)
+    throw new Error(`Erro ${response.status}: ${response.statusText}`);
   if (response.status === 204) return null;
   return response.json();
 }
@@ -13,7 +12,7 @@ const api = {
   // CAT API
   async buscarRacas() {
     try {
-      return await request(`${CAT_API_URL}/breeds`, { headers: { "x-api-key": CAT_API_KEY } });
+      return await request("http://localhost:3001/api/breeds");
     } catch (error) {
       console.error("Erro ao buscar raças:", error);
       return [];
@@ -21,52 +20,76 @@ const api = {
   },
 
   // CLIENTES
-  async buscarClientes() { return request(`${API_URL}/clients`); },
-  async buscarClientePorId(id) { return request(`${API_URL}/clients/${id}`); },
+  async buscarClientes() {
+    return request(`${API_URL}/clients`);
+  },
+  async buscarClientePorId(id) {
+    return request(`${API_URL}/clients/${id}`);
+  },
   async criarCliente(cliente) {
     return request(`${API_URL}/clients`, {
-      method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(cliente),
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(cliente),
     });
   },
   async editarCliente(id, dados) {
     return request(`${API_URL}/clients/${id}`, {
-      method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify(dados),
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(dados),
     });
   },
-  async apagarCliente(id) { return request(`${API_URL}/clients/${id}`, { method: "DELETE" }); },
+  async apagarCliente(id) {
+    return request(`${API_URL}/clients/${id}`, { method: "DELETE" });
+  },
 
   // PETS
-  async buscarPets() { return request(`${API_URL}/pets`); },
+  async buscarPets() {
+    return request(`${API_URL}/pets`);
+  },
   async buscarPetPorCliente(clientId) {
     const pets = await this.buscarPets();
-    return pets.find((pet) => String(pet.clientId) === String(clientId)) || null;
+    return (
+      pets.find((pet) => String(pet.clientId) === String(clientId)) || null
+    );
   },
   async criarPet(pet) {
     return request(`${API_URL}/pets`, {
-      method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(pet),
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(pet),
     });
   },
   async editarPet(id, dados) {
     return request(`${API_URL}/pets/${id}`, {
-      method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify(dados),
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(dados),
     });
   },
-  async apagarPet(id) { return request(`${API_URL}/pets/${id}`, { method: "DELETE" }); },
+  async apagarPet(id) {
+    return request(`${API_URL}/pets/${id}`, { method: "DELETE" });
+  },
 
   async apagarClienteEPet(clienteId) {
     try {
       const pet = await this.buscarPetPorCliente(clienteId);
-      
+
       if (pet) {
-        try { 
-          await this.apagarPet(pet.id); 
-        } catch(e) { console.warn("Aviso: Pet já não existia."); }
+        try {
+          await this.apagarPet(pet.id);
+        } catch (e) {
+          console.warn("Aviso: Pet já não existia.");
+        }
       }
-      
-      try { 
-        await this.apagarCliente(clienteId); 
-      } catch(e) { console.warn("Aviso: Cliente já não existia."); }
-      
+
+      try {
+        await this.apagarCliente(clienteId);
+      } catch (e) {
+        console.warn("Aviso: Cliente já não existia.");
+      }
+
       return true;
     } catch (error) {
       console.error("Erro fatal na exclusão:", error);
@@ -85,7 +108,7 @@ const api = {
       const nomePet = pet?.name?.toLowerCase() || "";
       return nomeCliente.includes(termo) || nomePet.includes(termo);
     });
-  }
+  },
 };
 
 export default api;

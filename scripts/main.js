@@ -129,10 +129,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 });
 
-// ==================================================
-// ESCUTADORES DE EVENTOS PERSONALIZADOS (CUSTOM EVENTS)
-// ==================================================
-
 // Ouvinte Unificado para Seleção de Card (Clique no card ou no Lápis)
 document.addEventListener("selecionarCard", (e) => {
   const { cliente, pet, racaApi } = e.detail;
