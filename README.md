@@ -1,6 +1,6 @@
 # 🐾 PetShop Manager
 
- Primeiro projeto que consome uma API externa que fiz
+ Primeiro projeto que consome uma API externa que fiz, com o objetivo se servir como introdução a requisições para uma API real
 
 O projeto integra a The Cat API para consultar raças de gatos, nome, idade etc. 
 
